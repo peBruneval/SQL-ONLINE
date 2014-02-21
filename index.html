@@ -34,7 +34,7 @@
    <script src="http://sha.shadecrypt.fr/completely.js" ></script>
    <script>
    	var result;
-      var socket = io.connect('http://localhost:8080');
+      var socket = io.connect('http://localhost');
       function ConnectionServer(){
          if($("#user").val() != "" && $("#pass").val() != ""){
             socket.emit("server", {
