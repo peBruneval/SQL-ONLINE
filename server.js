@@ -18,7 +18,7 @@ var server = http.createServer(function(req, res) {
         res.end(content);
     });
 });
-
+/*
 // Chargement de socket.io
 var io = require('socket.io').listen(server);
 
@@ -64,6 +64,6 @@ io.sockets.on('connection', function (socket) {
     
 });
 
-
+*/
 server.listen(8080);
 
