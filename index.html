@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link type="text/css" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+   <link rel="shortcut icon" href="http://sha.shadecrypt.fr/favicon_64x64.ico">
+	<title>NODE SQL</title>
+</head>
+<body style="text-align:center;">
+   <div id="connect">
+      <table style="margin:auto;">
+         <tr>
+            <td>Address :</td><td><input id="address" type="text" class="form-content"/></td>
+         </tr>
+         <tr>
+            <td>User :</td><td><input id="user" type="text" class="form-content"/></td>
+         </tr>
+         <tr>
+            <td>Password :</td><td><input id="pass" type="password" class="form-content"/></td>
+         </tr>
+         <tr>
+            <td>Database :</td><td><input id="db" type="text" class="form-content"/></td>
+         </tr>
+         <tr>
+            <td colspan="2"><input type="submit" value="Connect" onclick="ConnectionServer();"class="btn"/></td>
+         </tr>
+      </table>
+   </div>
+   <div id="tables" style="display:none;width: 10%;font-size: xx-small;float: left;"></div>
+	<div id="result" style="background-color:black; width:90%;color:white;margin-left:10%;"></div>
+   <div id="query" style="display:none;width:90%;float:right;"></div>
+	<script src="/socket.io/socket.io.js"></script>
+   <script src="//code.jquery.com/jquery-1.10.2.min.js" ></script>
+   <script src="http://sha.shadecrypt.fr/completely.js" ></script>
+   <script>
+   	var result;
+      var socket = io.connect('http://localhost:8080');
+      function ConnectionServer(){
+         if($("#user").val() != "" && $("#pass").val() != ""){
+            socket.emit("server", {
+               user : $("#user").val(),
+               password : $("#pass").val(),
+               server : $("#address").val(),
+               database : $("#bd").val(),
+               timeout : 1500
+            });
+            $('#connect').hide();
+            $('#query').show();
+            $("#tables").show();
+            socket.emit("query", "SELECT name FROM " + $("#db").val() + ".sys.tables");
+            console.log("SELECT name FROM " + $("#db").val() + ".sys.tables");
+         }else{
+            alert("complete fields pls");
+         }
+         
+      }
+      var auto = completely(document.getElementById('query'), {
+         fontSize : '24px',
+         fontFamily : 'Arial',
+         color:'Black'
+      });
+      auto.onChange = function(text){
+         auto.startFrom = text.lastIndexOf(" ")+1;
+         auto.repaint();
+      };
+
+      $('#query').keyup(function (e) {
+         if (e.which == 116) {
+            socket.emit('query', auto.input.value);
+            $('#result').html("Request send...");
+         }
+      });
+
+      socket.on('result', function(res) {
+      	result = res;
+         Display();
+      });
+
+      socket.on("tables", function(res)
+      {
+         var html = "<table>";
+         for(var i = 0; i < res.length; i ++)
+         {
+            html += "<tr>";
+            for(var key in res[i])
+            {
+               html += "<td>" + res[i][key] + "</td>";
+               auto.options.push(res[i][key]);
+            }
+            html += "</tr>";
+         }
+         html += "</table>";
+         $("#tables").html(html);
+
+      });
+   	function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
+   	$(document).bind("keydown", disableF5);
+   	$(document).on("keydown", disableF5); // disable F5
+
+      
+      auto.options = [
+            "SELECT",
+            "FROM",
+            "WHERE",
+            "INNER JOIN",
+            "ON",
+            "ORDER BY",
+            "LIKE",
+            "UPDATE",
+            "DELETE",
+            "IS",
+            "AS",
+            "ANY",
+            "BEGIN",
+            "END",
+            "IF",
+            "CURRENT_TIMESTAMP",
+            "CURRENT_TIME",
+            "CURRENT_DATE",
+            "CURRENT",
+            "DECLARE",
+            "TOP",
+            "UNION",
+            "SET",
+            "TABLE",
+            "INTO",
+            "WITH"
+       ];
+
+      function Display() // Affiche les results
+      {
+         var html = "";
+         if(result && result[0])
+         {
+            html += "<table class='table' style='background-color:black; color:aqua;font-size:x-small;'>"
+            var keys = Object.keys(result[0]);
+            html += "<thead style='color:yellowgreen;font-weight: bold; font-size: medium;'>";
+            for (var key in keys)
+            {
+               html += "<td>" + keys[key] + "</td>";
+            }
+               
+            html += "</thead>";
+            for(var i = 0; i < result.length; i ++)
+            {
+               html += "<tr>";
+               for(var key in result[i])
+                  html += "<td>" + result[i][key] + "</td>";
+               html += "</tr>";
+            }
+            html += "</table>";
+         }
+         else
+         {
+            if(result && result.message)
+               html += result.message;
+            else 
+               html += "OK";
+         }
+         $("#result").html(html);
+      }
+      
+   </script>
+</body>    
+</html>
