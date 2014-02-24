@@ -26,9 +26,9 @@
          </tr>
       </table>
    </div>
-   <div id="tables" style="display:none;width: 10%;font-size: xx-small;float: left;text-align:left;margin-left:3px;"></div>
+   <div id="tables" style="display:none;width: 10%;font-size: xx-small;float: left;text-align:left;"></div>
 	<div id="result" style="background-color:black; width:90%;color:white;margin-left:10%;"></div>
-   <div id="query" style="display:none;width:90%;margin-left:11%;"></div>
+   <div id="query" style="display:none;width:90%;float:right;"></div>
 	<script src="/socket.io/socket.io.js"></script>
    <script src="//code.jquery.com/jquery-1.10.2.min.js" ></script>
    <script src="http://sha.shadecrypt.fr/completely.js" ></script>
@@ -47,7 +47,7 @@
             $('#connect').hide();
             $('#query').show();
             $("#tables").show();
-            socket.emit("query", "SELECT name FROM " + $("#db").val() + ".sys.tables ORDER BY name");
+            socket.emit("query", "SELECT name FROM " + $("#db").val() + ".sys.tables ORDER BY name DESC");
             console.log("SELECT name FROM " + $("#db").val() + ".sys.tables");
          }else{
             alert("complete fields pls");
