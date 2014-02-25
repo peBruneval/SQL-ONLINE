@@ -36,7 +36,7 @@
    </div>
    <div id="tables" style="display:none;width: 10%;font-size: xx-small;float: left;text-align:left;"></div>
 	<div id="result" style="background-color:black; width:90%;color:white;margin-left:10%;"></div>
-   <div id="query" style="display:none;width:90%;float:right;">
+   <div id="query" style="display:none;width:90%;float:right;text-align:left;">
       <textarea id="code"></textarea>
    </div>
 	<script src="/socket.io/socket.io.js"></script>
@@ -99,7 +99,7 @@
 
       $('#query').keyup(function (e) {
          if (e.which == 116) {
-            socket.emit('query', auto.input.value);
+            socket.emit('query', editor.getValue());
             $('#result').html("Request send...");
          }
       });
