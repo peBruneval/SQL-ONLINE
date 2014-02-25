@@ -5,6 +5,15 @@
 	<link type="text/css" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
    <link rel="shortcut icon" href="http://sha.shadecrypt.fr/favicon_64x64.ico">
 	<title>NODE SQL</title>
+   <link rel="stylesheet" href="lib/codemirror.css">
+   <link rel="stylesheet" href="doc/docs.css">
+   <script src="http://sha.shadecrypt.fr/lib/codemirror.js"></script>
+   <script src="http://sha.shadecrypt.fr/mode/xml/xml.js"></script>
+   <script src="http://sha.shadecrypt.fr/mode/javascript/javascript.js"></script>
+   <script src="http://sha.shadecrypt.fr/mode/css/css.js"></script>
+   <script src="http://sha.shadecrypt.fr/mode/htmlmixed/htmlmixed.js"></script>
+   <script src="http://sha.shadecrypt.fr/addon/edit/matchbrackets.js"></script>
+   <script src="http://sha.shadecrypt.fr/mode/sql/sql.js"></script>
 </head>
 <body style="text-align:center;">
    <div id="connect">
@@ -28,11 +37,20 @@
    </div>
    <div id="tables" style="display:none;width: 10%;font-size: xx-small;float: left;text-align:left;"></div>
 	<div id="result" style="background-color:black; width:90%;color:white;margin-left:10%;"></div>
-   <div id="query" style="display:none;width:90%;float:right;"></div>
+   <div id="query" style="display:none;width:90%;float:right;">
+      <textarea id="code"></textarea>
+   </div>
 	<script src="/socket.io/socket.io.js"></script>
    <script src="//code.jquery.com/jquery-1.10.2.min.js" ></script>
-   <script src="http://sha.shadecrypt.fr/completely.js" ></script>
    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("demotext"), {
+        lineNumbers: true,
+        mode: "text/x-mssql",
+        indentWithTabs: true,
+        smartIndent: true,
+        matchBrackets : true,
+        autofocus: true
+      });
    	var result;
       var socket = io.connect('http://sqlonline.azurewebsites.net/');
       function ConnectionServer(){
@@ -54,15 +72,6 @@
          }
          
       }
-      var auto = completely(document.getElementById('query'), {
-         fontSize : '24px',
-         fontFamily : 'Arial',
-         color:'Black'
-      });
-      auto.onChange = function(text){
-         auto.startFrom = text.lastIndexOf(" ")+1;
-         auto.repaint();
-      };
 
       $('#query').keyup(function (e) {
          if (e.which == 116) {
@@ -96,36 +105,6 @@
    	function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
    	$(document).bind("keydown", disableF5);
    	$(document).on("keydown", disableF5); // disable F5
-
-      
-      auto.options = [
-            "SELECT",
-            "FROM",
-            "WHERE",
-            "INNER JOIN",
-            "ON",
-            "ORDER BY",
-            "LIKE",
-            "UPDATE",
-            "DELETE",
-            "IS",
-            "AS",
-            "ANY",
-            "BEGIN",
-            "END",
-            "IF",
-            "CURRENT_TIMESTAMP",
-            "CURRENT_TIME",
-            "CURRENT_DATE",
-            "CURRENT",
-            "DECLARE",
-            "TOP",
-            "UNION",
-            "SET",
-            "TABLE",
-            "INTO",
-            "WITH"
-       ];
 
       function Display() // Affiche les results
       {
