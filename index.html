@@ -53,9 +53,32 @@
            matchBrackets : true,
            autofocus: true
          });
+         socket = io.connect();
+         socket.on('result', function(res) {
+            result = res;
+            Display();
+          });
+
+         socket.on("tables", function(res)
+         {
+            var html = "<table>";
+            for(var i = 0; i < res.length; i ++)
+            {
+               html += "<tr>";
+               for(var key in res[i])
+               {
+                  html += "<td>" + res[i][key] + "</td>";
+               }
+               html += "</tr>";
+            }
+            html += "</table>";
+            $("#tables").html(html);
+
+         });
       })
    	var result;
-      var socket = io.connect();
+      var socket;
+
       function ConnectionServer(){
          if($("#user").val() != "" && $("#pass").val() != ""){
             socket.emit("server", {
@@ -73,7 +96,6 @@
          }else{
             alert("complete fields pls");
          }
-         
       }
 
       $('#query').keyup(function (e) {
@@ -83,27 +105,7 @@
          }
       });
 
-      socket.on('result', function(res) {
-      	result = res;
-         Display();
-      });
-
-      socket.on("tables", function(res)
-      {
-         var html = "<table>";
-         for(var i = 0; i < res.length; i ++)
-         {
-            html += "<tr>";
-            for(var key in res[i])
-            {
-               html += "<td>" + res[i][key] + "</td>";
-            }
-            html += "</tr>";
-         }
-         html += "</table>";
-         $("#tables").html(html);
-
-      });
+      
    	function disableF5(e) { if ((e.which || e.keyCode) == 116) e.preventDefault(); };
    	$(document).bind("keydown", disableF5);
    	$(document).on("keydown", disableF5); // disable F5
