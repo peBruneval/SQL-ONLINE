@@ -55,7 +55,7 @@
          });
       })
    	var result;
-      var socket = io.connect('http://sqlonline.azurewebsites.net');
+      var socket = io.connect(location.host);
       function ConnectionServer(){
          if($("#user").val() != "" && $("#pass").val() != ""){
             socket.emit("server", {
