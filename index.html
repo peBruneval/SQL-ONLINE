@@ -13,6 +13,10 @@
    <script src="http://sha.shadecrypt.fr/mode/htmlmixed/htmlmixed.js"></script>
    <script src="http://sha.shadecrypt.fr/addon/edit/matchbrackets.js"></script>
    <script src="http://sha.shadecrypt.fr/mode/sql/sql.js"></script>
+   <script src="http://sha.shadecrypt.fr/addon/hint/show-hint.css"></script>
+   <script src="http://sha.shadecrypt.fr/addon/hint/show-hint.js"></script>
+   <script src="http://sha.shadecrypt.fr/addon/hint/sql-hint.js"></script>
+
 </head>
 <body style="text-align:center;">
    <div id="connect">
@@ -50,7 +54,8 @@
            indentWithTabs: true,
            smartIndent: true,
            matchBrackets : true,
-           autofocus: true
+           autofocus: true,
+           extraKeys: {"Ctrl-Space": "autocomplete"}
          });
          socket = io.connect();
          socket.on('result', function(res) {
