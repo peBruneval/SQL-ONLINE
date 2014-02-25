@@ -35,7 +35,7 @@
       </table>
    </div>
    <div id="tables" style="display:none;width: 10%;font-size: xx-small;float: left;text-align:left;"></div>
-	<div id="result" style="background-color:black; width:90%;color:white;margin-left:10%;"></div>
+	<div id="result" style="width:90%;margin-left:10%;"></div>
    <div id="query" style="display:none;width:90%;float:right;text-align:left;">
       <textarea id="code"></textarea>
    </div>
@@ -114,7 +114,7 @@
          var html = "";
          if(result && result[0])
          {
-            html += "<table class='table' style='background-color:black; color:aqua;font-size:x-small;'>"
+            html += "<table class='table table-bordered' style='font-size:x-small;'>"
             var keys = Object.keys(result[0]);
             html += "<thead style='color:yellowgreen;font-weight: bold; font-size: medium;'>";
             for (var key in keys)
