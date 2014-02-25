@@ -55,7 +55,7 @@
          });
       })
    	var result;
-      var socket = io.connect(location.host);
+      var socket = io.connect();
       function ConnectionServer(){
          if($("#user").val() != "" && $("#pass").val() != ""){
             socket.emit("server", {
