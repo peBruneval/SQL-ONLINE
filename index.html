@@ -78,6 +78,15 @@
             html += "</table>";
             $("#tables").html(html);
 
+            var orig = CodeMirror.hint.sql;
+            CodeMirror.hint.sql = function(cm) {
+              var inner = orig(cm) || {from: cm.getCursor(), to: cm.getCursor(), list: []};
+              $(".t").each(function(i){
+                  inner.list.push($(this).html());
+              })
+              return inner;
+            };
+
          });
       })
    	var result;
