@@ -71,7 +71,7 @@
                html += "<tr>";
                for(var key in res[i])
                {
-                  html += "<td>" + res[i][key] + "</td>";
+                  html += "<td class='t'>" + res[i][key] + "</td>";
                }
                html += "</tr>";
             }
@@ -82,6 +82,12 @@
       })
    	var result;
       var socket;
+      /*
+      SELECT COLUMN_NAME 
+      FROM INFORMATION_SCHEMA.COLUMNS 
+      WHERE TABLE_NAME='t_users'
+      */
+
 
       function ConnectionServer(){
          if($("#user").val() != "" && $("#pass").val() != ""){
@@ -96,7 +102,7 @@
             $('#query').show();
             $("#tables").show();
             socket.emit("query", "SELECT name FROM " + $("#db").val() + ".sys.tables ORDER BY name DESC");
-            console.log("SELECT name FROM " + $("#db").val() + ".sys.tables");
+            //console.log("SELECT name FROM " + $("#db").val() + ".sys.tables");
          }else{
             alert("complete fields pls");
          }
